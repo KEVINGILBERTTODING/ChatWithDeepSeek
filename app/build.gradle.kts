@@ -77,5 +77,6 @@ dependencies {
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
 
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DeepSeek</string>
+    <string name="online">Online</string>
 </resources>
