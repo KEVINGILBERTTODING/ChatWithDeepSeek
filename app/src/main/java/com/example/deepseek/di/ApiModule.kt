@@ -1,19 +1,20 @@
 package com.example.deepseek.di
 
-import android.app.Application
-import android.content.Context
+import com.example.deepseek.data.apis.DeepSeekApis
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ApplicationModule {
+class ApiModule {
     @Provides
     @Singleton
-    fun provideContextApplication(application: Application) : Context {
-        return application.applicationContext
+    fun provideDeepSeekApis(retrofit: Retrofit) : DeepSeekApis {
+        return retrofit.create(DeepSeekApis::class.java)
     }
 }

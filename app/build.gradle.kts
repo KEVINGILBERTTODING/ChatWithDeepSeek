@@ -75,7 +75,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
-//    implementation(libs.retrofit)
-//    implementation(libs.converter.gson)
-//    implementation(libs.google.auth.library.oauth2.http)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
 }
