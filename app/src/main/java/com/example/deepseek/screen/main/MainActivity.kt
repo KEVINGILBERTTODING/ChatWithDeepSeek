@@ -1,4 +1,4 @@
-package com.example.deepseek
+package com.example.deepseek.screen.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
