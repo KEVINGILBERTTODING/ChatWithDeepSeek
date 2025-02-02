@@ -210,11 +210,7 @@ private fun AppBar(chatViewModel: ChatViewModel) {
         Spacer(Modifier.weight(1f))
         if (chatList.isEmpty().not()) {
             when(chatState) {
-                is SendChatModel.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp).align(Alignment.CenterVertically)
-                    )
-                }
+                is SendChatModel.Loading -> {}
                 else -> {
                     Box(
                         modifier = Modifier.wrapContentSize()
