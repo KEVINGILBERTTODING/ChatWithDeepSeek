@@ -53,8 +53,12 @@ class ChatViewModel @Inject constructor(
             }
         }
     }
+    fun clearAllChat() {
+        _chatList.value.clear()
+    }
+    fun removeThinkTag(input: String): String {
+        val result = input.replace(Regex("<think>.*?</think>", RegexOption.DOT_MATCHES_ALL), "")
+        return result.replace(Regex("(\n|\r|\\s)+"), " ").trim()
+    }
 }
-fun removeThinkTag(input: String): String {
-    val result = input.replace(Regex("<think>.*?</think>", RegexOption.DOT_MATCHES_ALL), "")
-    return result.replace(Regex("(\n|\r|\\s)+"), " ").trim()
-}
+

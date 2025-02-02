@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,13 +20,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -43,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,6 +59,8 @@ import com.example.deepseek.R
 import com.example.deepseek.data.remote.MessageModel
 import com.example.deepseek.domain.models.SendChatModel
 import com.example.deepseek.screen.chat.widgets.BubleChat
+import com.example.deepseek.screen.chat.widgets.EmptyScreen
+import com.example.deepseek.screen.chat.widgets.LoadingMessage
 import com.example.deepseek.screen.chat.widgets.ProfilePicture
 import com.example.deepseek.ui.theme.DeepSeekTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,18 +97,24 @@ private fun MainScreen(paddingValues: PaddingValues) {
         Column(
             modifier = Modifier.safeContentPadding(),
         ) {
-            AppBar()
+            AppBar(chatViewModel)
+            Spacer(modifier = Modifier.padding(top = 10.dp))
             if (chatList.isEmpty()) {
-                Text(text = "Tidak ada data")
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    EmptyScreen()
+                }
             }else {
                 LazyColumn(
+                    verticalArrangement = Arrangement.Bottom,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
                     items(chatList) { chat ->
-                        Row(modifier = Modifier.fillMaxWidth()) {
+                        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)) {
                             BubleChat(chat)
                         }
                     }
@@ -109,7 +122,7 @@ private fun MainScreen(paddingValues: PaddingValues) {
             }
             when(val sendState = stateSendMessage) {
                 is SendChatModel.Loading -> {
-                    CircularProgressIndicator()
+                    LoadingMessage()
                 }
                 is SendChatModel.Error -> {
                     Toast.makeText(context, sendState.message, Toast.LENGTH_SHORT).show()
@@ -155,11 +168,14 @@ private fun MainScreen(paddingValues: PaddingValues) {
                         onSearch = {
                             keyboardController?.hide()
                             focusManager.clearFocus()
-                            if (keywordVal.value.isNotEmpty()) {
-                                chatViewModel.sendMessage(keywordVal.value)
-                                keywordVal.value = ""
-                            } else {
-//                                Toast.makeText(context, context.getString(R.string.user_id_must_be_ten), Toast.LENGTH_SHORT).show()
+                            when(stateSendMessage) {
+                                is SendChatModel.Loading -> {}
+                                else -> {
+                                    if (keywordVal.value.isNotEmpty()) {
+                                        chatViewModel.sendMessage(keywordVal.value)
+                                        keywordVal.value = ""
+                                    }
+                                }
                             }
                         }
                     )
@@ -171,7 +187,9 @@ private fun MainScreen(paddingValues: PaddingValues) {
 }
 
 @Composable
-private fun AppBar() {
+private fun AppBar(chatViewModel: ChatViewModel) {
+    val chatList by chatViewModel.chatList.collectAsState()
+    val chatState by chatViewModel.sendMessageState.collectAsState()
     Row(modifier = Modifier.fillMaxWidth()) {
         ProfilePicture()
         Spacer(modifier = Modifier.width(12.dp))
@@ -189,5 +207,33 @@ private fun AppBar() {
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
+        Spacer(Modifier.weight(1f))
+        if (chatList.isEmpty().not()) {
+            when(chatState) {
+                is SendChatModel.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp).align(Alignment.CenterVertically)
+                    )
+                }
+                else -> {
+                    Box(
+                        modifier = Modifier.wrapContentSize()
+                    ) {
+                        IconButton(
+                            onClick = {
+                                chatViewModel.clearAllChat()
+                            }
+                        ) {
+                            Image(
+                                modifier = Modifier.size(28.dp),
+                                painter = painterResource(R.drawable.ic_trash),
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

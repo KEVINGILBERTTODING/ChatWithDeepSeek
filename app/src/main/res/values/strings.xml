@@ -2,4 +2,14 @@
     <string name="app_name">DeepSeek</string>
     <string name="online">Online</string>
     <string name="write_ur_message">Write your message....</string>
+    <string name="thinking">Thinking....</string>
+    <string name="explain">Explain</string>
+    <string name="explain_quantum_physics">Explain Quantum physics</string>
+    <string name="what_are_wormholes">What are wormholes explain like i am 5</string>
+    <string name="write_edit">Write and edit</string>
+    <string name="write_a_tweet_about_global_warming">Write a tweet about global warming</string>
+    <string name="write_a_rap_song">Write a rap song lyrics about</string>
+    <string name="translate">Translate</string>
+    <string name="how_do_you_say">how to say "I love you" in Toraja language?</string>
+    <string name="write_a_poem">Write a poem about flower and love</string>
 </resources>
