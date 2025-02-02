@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DeepSeek</string>
     <string name="online">Online</string>
+    <string name="write_ur_message">Write your message....</string>
 </resources>

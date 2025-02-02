@@ -1,21 +1,26 @@
 package com.example.deepseek.domain.repositoryimpl
 
 import com.example.deepseek.data.apis.DeepSeekApis
-import com.example.deepseek.data.remote.MessageModel
+import com.example.deepseek.data.remote.RequestMessageModel
 import com.example.deepseek.data.remote.ResponseMessageModel
 import com.example.deepseek.domain.repositories.ChatRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
     val apis: DeepSeekApis
 ) : ChatRepository {
-    override suspend fun sendCommand(message: MessageModel): Result<ResponseMessageModel?> {
+    override suspend fun sendCommand(request: RequestMessageModel): Result<ResponseMessageModel?> {
         return try {
-            val response = apis.sendCommand(message).getOrThrow()
-            Result.success(response)
+            val responseResult = apis.sendCommand(request)
+            if (responseResult.isSuccessful) {
+                val responseBody = responseResult.body()
+                Result.success(responseBody)
+            }else {
+                Result.failure(Exception(responseResult.message()))
+            }
         }catch (e: Exception) {
             Result.failure(e)
         }
     }
+
 }

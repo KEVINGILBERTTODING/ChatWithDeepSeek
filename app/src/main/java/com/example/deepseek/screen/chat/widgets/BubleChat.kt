@@ -2,6 +2,7 @@ package com.example.deepseek.screen.chat.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +28,8 @@ import com.example.deepseek.ui.theme.DeepSeekTheme
 @Composable
 fun BubleChat(data: MessageModel) {
     val isUser = data.role.equals("user")
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement =
+    if (isUser) Arrangement.Absolute.Right else Arrangement.Absolute.Left) {
         if (isUser.not()) {
             ProfilePicture()
             Spacer(modifier = Modifier.padding(end = 5.dp))
