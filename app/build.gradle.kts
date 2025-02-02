@@ -75,7 +75,12 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
-//    implementation(libs.retrofit)
-//    implementation(libs.converter.gson)
-//    implementation(libs.google.auth.library.oauth2.http)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    debugImplementation("com.github.chuckerteam.chucker:library:4.1.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.1.0")
+
 }
